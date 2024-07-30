@@ -1,10 +1,4 @@
+# общие настройки
 spring:
-  application:
-    name: todo-backend
-  datasource: # данные для соединения с БД
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: 123
-    driver-class-name: org.postgresql.Driver
-server:
-  port: 8085
+  profiles:
+    active: local
