@@ -7,7 +7,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * пользователь - основной объект, с которым связаны все остальные (через внешние ключи)
@@ -35,23 +34,8 @@ public class User {
     @Column(name = "userpassword")
     private String password;
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
-    private Set<Role> roles;
-
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-//    private List<Task> tasks;
-//
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-//    private List<Category> categories;
-//
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-//    private List<Priority> priorities;
-//
-//    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, optional = false)
-//    private Activity activity; // активность пользователя (активация и любые другие)
-//
-//    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, optional = false)
-//    private Stat stat; // общая статистика пользователя по всем задачам
+//    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+//    private Set<Role> roles;
 
     @Override
     public boolean equals(Object o) {

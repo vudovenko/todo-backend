@@ -12,7 +12,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import java.util.Objects;
 
 /**
- * общая статистика по задачам
+ * Общая статистика по задачам.
+ * <p>
+ * в этой таблице всего 1 запись, которая обновляется (но никогда не удаляется)
  */
 @Entity
 @Table(name = "stat", schema = "todolist", catalog = "postgres")
@@ -22,7 +24,7 @@ import java.util.Objects;
 @Getter
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Stat { // в этой таблице всего 1 запись, которая обновляется (но никогда не удаляется)
+public class Stat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
