@@ -1,10 +1,7 @@
 package ru.vudovenko.backend.todo.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -20,6 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Setter
 @Getter
+@ToString(onlyExplicitlyIncluded = true)
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Role {
@@ -28,6 +26,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ToString.Include
     private String name; // название роли
 
     @ManyToMany
@@ -47,10 +46,5 @@ public class Role {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 }

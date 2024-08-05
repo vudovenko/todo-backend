@@ -16,6 +16,7 @@ import java.util.Set;
 @Table(name = "user_data", schema = "todolist", catalog = "postgres")
 @Setter
 @Getter
+@ToString(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Cacheable
@@ -28,6 +29,7 @@ public class User {
 
     private String email;
 
+    @ToString.Include
     private String username;
 
     @Column(name = "userpassword")
@@ -62,10 +64,5 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return username;
     }
 }
