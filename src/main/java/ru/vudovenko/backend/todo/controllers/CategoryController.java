@@ -1,10 +1,13 @@
 package ru.vudovenko.backend.todo.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ru.vudovenko.backend.todo.entity.Category;
 import ru.vudovenko.backend.todo.service.CategoryService;
+
+import java.util.List;
 
 /**
  * Используем @RestController вместо обычного @Controller, чтобы все ответы сразу оборачивались в JSON,
@@ -13,17 +16,33 @@ import ru.vudovenko.backend.todo.service.CategoryService;
  * Названия методов могут быть любыми, главное не дублировать их имена внутри класса и URL mapping
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/category")
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    @PostMapping("/all")
+    public List<Category> findAll(@RequestBody String email) {
+        return categoryService.findAll(email);
     }
 
-    @GetMapping("/id")
-    public Category findById() {
-        return categoryService.findById(60136L);
+    @PostMapping("/add")
+    public ResponseEntity<Category> add(@RequestBody Category category) {
+
+        // проверка на обязательные параметры
+        if (category.getId() != null && category.getId() != 0) { // это означает, что id заполнено
+            // id создается автоматически в БД (autoincrement), поэтому его передавать не нужно, иначе может быть конфликт уникальности значения
+            return new ResponseEntity("redundant param: id MUST be null",
+                    HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        // если передали пустое значение title
+        if (category.getTitle() == null || category.getTitle().trim().isEmpty()) {
+            return new ResponseEntity("missed param: title MUST be not null",
+                    HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return ResponseEntity.ok(categoryService.add(category));
     }
 }
