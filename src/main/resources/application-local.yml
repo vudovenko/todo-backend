@@ -7,6 +7,13 @@ spring:
     username: postgres
     password: 123
     driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
 server:
   port: 8085
   ssl:
@@ -14,3 +21,18 @@ server:
     key-store-type: PKCS12
     key-store: classpath:ssl/javabegin_ssl.pfx
     key-store-password: 123
+
+logging:
+  level:
+    org:
+      springframework: info
+      hibernate:
+        orm:
+          jdbc:
+            bind: trace
+            extract: trace
+        type:
+          descriptor:
+            sql: trace
+  pattern:
+    console: "%C{1.} [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] - %msg%n"
