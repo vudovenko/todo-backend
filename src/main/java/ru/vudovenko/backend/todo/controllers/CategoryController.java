@@ -1,6 +1,7 @@
 package ru.vudovenko.backend.todo.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +61,18 @@ public class CategoryController {
 
         categoryService.update(category);
 
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity delete(@PathVariable Long id) {
+        try {
+            Category category = categoryService.findById(id);
+            categoryService.deleteById(category.getId());
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity("id = " + id + " not found",
+                    HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 }
