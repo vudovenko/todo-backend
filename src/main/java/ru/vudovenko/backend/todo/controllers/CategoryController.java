@@ -45,4 +45,21 @@ public class CategoryController {
 
         return ResponseEntity.ok(categoryService.add(category));
     }
+
+    @PutMapping("/update")
+    public ResponseEntity update(@RequestBody Category category) {
+        if (category.getId() == null || category.getId() == 0) {
+            return new ResponseEntity("missed param: id MUST be not null",
+                    HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (category.getTitle() == null || category.getTitle().trim().isEmpty()) {
+            return new ResponseEntity("missed param: title MUST be not null",
+                    HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        categoryService.update(category);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
