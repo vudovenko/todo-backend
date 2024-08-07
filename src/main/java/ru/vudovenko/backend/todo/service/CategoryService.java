@@ -2,13 +2,11 @@ package ru.vudovenko.backend.todo.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.vudovenko.backend.todo.entity.Category;
 import ru.vudovenko.backend.todo.repo.CategoryRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 // все методы класса должны выполниться без ошибки, чтобы транзакция завершилась
@@ -20,16 +18,10 @@ public class CategoryService {
     private final CategoryRepository repository;
 
     public Category findById(Long id) {
-        Optional<Category> categoryOptional = repository.findById(id);
-
-        if (categoryOptional.isPresent()) {
-            return categoryOptional.get();
-        } else {
-            throw new EmptyResultDataAccessException("Category with id " + id + " not found", 1);
-        }
+        return repository.findById(id).orElseThrow();
     }
 
-   public List<Category> findByTitle(String title, String email) {
+    public List<Category> findByTitle(String title, String email) {
         return repository.findByTitle(title, email);
     }
 

@@ -1,7 +1,6 @@
 package ru.vudovenko.backend.todo.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +9,7 @@ import ru.vudovenko.backend.todo.search.CategorySearchValuesDTO;
 import ru.vudovenko.backend.todo.service.CategoryService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Используем @RestController вместо обычного @Controller, чтобы все ответы сразу оборачивались в JSON,
@@ -70,9 +70,9 @@ public class CategoryController {
         try {
             Category category = categoryService.findById(id);
             categoryService.deleteById(category.getId());
-        } catch (EmptyResultDataAccessException e) {
-            return new ResponseEntity("id = " + id + " not found",
-                    HttpStatus.NOT_FOUND);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity("Category with id " + id + " not found",
+                    HttpStatus.NOT_ACCEPTABLE);
         }
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -88,5 +88,18 @@ public class CategoryController {
                 .findByTitle(categorySearchValuesDTO.getTitle(), categorySearchValuesDTO.getEmail());
 
         return ResponseEntity.ok(categories);
+    }
+
+    @PostMapping("/id")
+    public ResponseEntity<Category> findById(@RequestBody Long id) {
+        Category category;
+        try {
+            category = categoryService.findById(id);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity("Category with id " + id + " not found",
+                    HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return ResponseEntity.ok(category);
     }
 }
