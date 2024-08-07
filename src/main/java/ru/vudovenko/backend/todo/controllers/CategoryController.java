@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vudovenko.backend.todo.entity.Category;
+import ru.vudovenko.backend.todo.search.CategorySearchValuesDTO;
 import ru.vudovenko.backend.todo.service.CategoryService;
 
 import java.util.List;
@@ -74,5 +75,18 @@ public class CategoryController {
                     HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValuesDTO categorySearchValuesDTO) {
+        if (categorySearchValuesDTO.getEmail() == null || categorySearchValuesDTO.getEmail().trim().isEmpty()) {
+            return new ResponseEntity("missed param: email MUST be not null",
+                    HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        List<Category> categories = categoryService
+                .findByTitle(categorySearchValuesDTO.getTitle(), categorySearchValuesDTO.getEmail());
+
+        return ResponseEntity.ok(categories);
     }
 }

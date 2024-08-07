@@ -29,6 +29,10 @@ public class CategoryService {
         }
     }
 
+   public List<Category> findByTitle(String title, String email) {
+        return repository.findByTitle(title, email);
+    }
+
     public List<Category> findAll(String email) {
         return repository.findByUserEmailOrderByTitleAsc(email);
     }
