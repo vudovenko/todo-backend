@@ -66,7 +66,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResponseEntity delete(@PathVariable("id") Long id) {
         try {
             Category category = categoryService.findById(id);
             categoryService.deleteById(category.getId());
