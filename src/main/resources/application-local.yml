@@ -13,7 +13,6 @@ spring:
       hibernate:
         format_sql: true
 
-
 server:
   port: 8085
   ssl:
@@ -24,6 +23,7 @@ server:
 
 logging:
   level:
+    ru.vudovenko.backend.todo: debug
     org:
       springframework: info
       hibernate:
