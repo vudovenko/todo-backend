@@ -1,6 +1,7 @@
 package ru.vudovenko.backend.todo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cache;
@@ -40,7 +41,8 @@ public class Category {
     @Column(name = "uncompleted_count", updatable = false)
     private Long uncompletedCount;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
