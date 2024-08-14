@@ -1,11 +1,13 @@
 package ru.vudovenko.backend.todo.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Все доступные роли, которые будут привязаны к пользователю
@@ -28,11 +30,12 @@ public class Role {
     @ToString.Include
     private String name; // название роли
 
-//	@ManyToMany
-//	@JoinTable(name = "user_role",
-//			joinColumns = @JoinColumn(name = "role_id"),
-//			inverseJoinColumns = @JoinColumn(name = "user_id"))
-//	private Set<User> users;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> users;
 
     @Override
     public boolean equals(Object o) {
